@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  Home.swift
 //  SweetSwiftUI
 //
 //  Created by AhnSangHoon on 2022/02/15.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct Home: View {
     var body: some View {
         Text("Hello, world!")
             .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Home()
     }
 }
