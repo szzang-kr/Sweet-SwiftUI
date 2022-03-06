@@ -44,3 +44,58 @@
 4. ZStack에서 확장을 위해 Spacer를 사용한다면 형제뷰의 크기에 따라서 맞춰진다.
     1. 따라서 화면전체에 확장 하고 싶다면 Color.clear를 사용하거나 Rectangle 처럼 부모 크기에 맞춰 확장하려는 성질의 뷰를 형제뷰로 넣어주면 된다.
 
+### Overlay & Background
+
+1. ZStack 처럼 중첩된 뷰를 표현하는데 사용된다.
+2. Overlay는 뷰 원본의 공간을 기준으로 그 위에 새로운 뷰를 중첩하여 쌓는 기능
+    1. UIKit의 addSubview 메서드와 사용하는 개념이 같다, 자식뷰는 부모 뷰를 기준으로 frame과 size가 결정된다
+
+```swift
+// ZStack과 Overlay의 동일한 동작의 코드 비교
+ZStack {
+	Rectangle().fill(Color.green).frame(width: 150, height: 150)
+	Rectangle().fill(Color.yellow).frame(width: 150, height: 150)
+}
+
+Rectangle()
+    .fill(Color.green).frame(width: 150, height: 150)
+	.overlay(
+		Rectangle().fill(Color.yellow) // 크기를 지정하지 않으면, 원본 뷰의 크기에 맞춰진다.
+	)
+```
+
+3. Background는 Overlay와 같이 새로운 뷰를 중첩하여 쌓지만, 상위가 아닌 하위에 쌓는 기능
+
+```swift
+// ZStack과 Background의 동일한 동작의 코드 비교
+ZStack {
+	Rectangle().fill(Color.green).frame(width: 150, height: 150)
+	Rectangle().fill(Color.yellow).frame(width: 150, height: 150)
+}
+
+Rectangle()
+    .fill(Color.yellow).frame(width: 150, height: 150)
+	.background(
+		Rectangle().fill(Color.green) // 아래에 쌓기 때문에 컬러 순서를 변경하였다.
+	)
+```
+
+4. alignment 매개변수를 통해 추가되는 뷰의 위치를 지정할 수 있음
+
+```swift
+Circle()
+	.fill(Color.yellow.opacity(0.55))
+	.frame(width: 250, height: 250)
+	.overlay(Text("hello world"))
+	.background(Text("top"), alignment: .top)
+	.overlay(Text("left"), alignment: .leading)
+	.overlay(Text("right"), alignment: .trailing)
+	.background(Text("bottom"), alignment: .bottom)
+```
+![Untitled](https://user-images.githubusercontent.com/39300449/156912032-50852040-aca6-4ba1-875d-3d5b9a8468ee.png)</br>
+
+background로 추가된 top, bottom은 하위에 추가되었기 때문에 흐릿하게 보임
+
+5. 두가지 방법과 ZStack의 사용 구분
+    1. .overlay/.background : 부모 뷰 외의 기존에 존재하는 다른 뷰들에게 영향을 주지 않기 때문에 레이아웃을 구성할 때 사용하기 보단 부모 뷰를 꾸밀 때 사용
+    2. ZStack : 특정 변경 사항이 다른 뷰들에게 영향을 끼칠 수 있으며, 자식 뷰의 크기에 따라 ZStack의 크기가 달라질 수 있다.주로 UI를 구성할 때 사용
