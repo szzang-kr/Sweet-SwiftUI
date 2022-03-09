@@ -9,6 +9,23 @@ import SwiftUI
 
 struct Home: View {
     var body: some View {
+        VStack {
+            ProductRow()
+            ProductRow()
+            ProductRow()
+            ProductRow()
+        }
+    }
+}
+
+struct Home_Previews: PreviewProvider {
+    static var previews: some View {
+        Home()
+    }
+}
+
+struct ProductRow: View {
+    var body: some View {
         HStack(spacing: .zero) {
             Image("apple")
                 .resizable() // 이미지의 크기를 변경할 수 있도록 설정
@@ -38,7 +55,7 @@ struct Home: View {
                             .foregroundColor(Color("peach"))
                             .frame(width: 32, height: 32)
                     }
-
+                    
                 }
             }
             .padding(12)
@@ -53,11 +70,5 @@ struct Home: View {
             y: 2
         )
         .padding(.vertical, 8)
-    }
-}
-
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Home()
     }
 }
