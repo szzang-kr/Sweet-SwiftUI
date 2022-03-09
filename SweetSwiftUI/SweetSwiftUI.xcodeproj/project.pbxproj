@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		772A72BA27D87D8E00CC7B62 /* ProductRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772A72B927D87D8E00CC7B62 /* ProductRow.swift */; };
+		772A72C027D87FF900CC7B62 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772A72BF27D87FF900CC7B62 /* Color+.swift */; };
 		7768D1D927D48ECC002C2800 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7768D1D827D48ECC002C2800 /* AppDelegate.swift */; };
 		7768D1DB27D48EDD002C2800 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7768D1DA27D48EDD002C2800 /* SceneDelegate.swift */; };
 		7768D1E127D4905B002C2800 /* ProductData.json in Resources */ = {isa = PBXBuildFile; fileRef = 7768D1DF27D4905B002C2800 /* ProductData.json */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		772A72B927D87D8E00CC7B62 /* ProductRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRow.swift; sourceTree = "<group>"; };
+		772A72BF27D87FF900CC7B62 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		7768D1D827D48ECC002C2800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7768D1DA27D48EDD002C2800 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7768D1DF27D4905B002C2800 /* ProductData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ProductData.json; sourceTree = "<group>"; };
@@ -45,6 +47,22 @@
 				772A72B927D87D8E00CC7B62 /* ProductRow.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		772A72BD27D87FE500CC7B62 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				772A72BE27D87FEE00CC7B62 /* Extension */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		772A72BE27D87FEE00CC7B62 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				772A72BF27D87FF900CC7B62 /* Color+.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		7768D1DC27D48F49002C2800 /* Application */ = {
@@ -92,6 +110,7 @@
 		779ED48B27BAA624007ECEC8 /* SweetSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				772A72BD27D87FE500CC7B62 /* Helper */,
 				7768D1DC27D48F49002C2800 /* Application */,
 				7768D1E427D490B8002C2800 /* User Interface */,
 				7768D1DE27D4905B002C2800 /* Resources */,
@@ -180,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				772A72BA27D87D8E00CC7B62 /* ProductRow.swift in Sources */,
+				772A72C027D87FF900CC7B62 /* Color+.swift in Sources */,
 				7768D1D927D48ECC002C2800 /* AppDelegate.swift in Sources */,
 				779ED48F27BAA624007ECEC8 /* Home.swift in Sources */,
 				7768D1DB27D48EDD002C2800 /* SceneDelegate.swift in Sources */,
