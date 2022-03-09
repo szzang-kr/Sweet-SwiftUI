@@ -36,6 +36,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		772A72B827D87D5800CC7B62 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				779ED48E27BAA624007ECEC8 /* Home.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		7768D1DC27D48F49002C2800 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -57,7 +65,7 @@
 		7768D1E427D490B8002C2800 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				779ED48E27BAA624007ECEC8 /* Home.swift */,
+				772A72B827D87D5800CC7B62 /* Home */,
 			);
 			path = "User Interface";
 			sourceTree = "<group>";
