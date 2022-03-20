@@ -16,3 +16,49 @@
     - 뷰의 배경색이 불투명이어야 한다.
     - 이미 작성된 modifier를 모두 반영 시켜야 한다.
         - clipped, cornerRadius(clipped가 포함되어있음), compositingGroup 등의 modifer 사용
+
+### NavigationView
+
+1. navigationBarTitle(_:) : NavigationView의 타이틀을 지정하며, 내부에서 사용되는 뷰에 적용해야한다.
+    1. UIKit에서는 UINavigationController의 타이틀을 직접 적용하는게 아닌 UIViewController에 타이틀을 적용했었다. 
+    2. NavigationView에 사용되는 Modifer들은 Preference라는 기능이 사용되어 하위뷰가 상위 뷰에 데이터를 전달하는 방식이다.
+2. navigationBarItems(_:, _:) : NavigationBar의 item을 지정하며, leading, trailing 두 위치에 View를 둘 수 있으며, 특정 위치에 여러가지 버튼을 두려면 HStack으로 감싼다.
+    1. 해당 Modifier는 현재 toolBar로 대체를 권유하고 있다.
+    2. iOS 13.4 이전 버전에서는 NavigationView의 스택이 쌓이게 되면 뒤로가기 버튼(<)이 leading에 삽입 한 버튼에 가려지게 된다.
+3. toolBar(content:) : NavigationView 혹은 ToolBar에 여러가지 아이템을 삽입하고자 할 때 사용한다.
+    
+    ```swift
+    var body: some View {
+      let leadingItem = Button(action: {}) {
+          Image(systemName: "bell")
+      }
+      let trailingItem = Button(action: {}) {
+          Image(systemName: "gear")
+      }
+      return NavigationView {
+          Image("SwiftUI")
+              .navigationTitle("네비게이션 바 타이틀")
+              .toolbar {
+                  ToolbarItemGroup(
+                      placement: .navigationBarLeading,
+                      content: {
+                          leadingItem
+                      }
+                  )
+                  ToolbarItemGroup(
+                      placement: .navigationBarTrailing,
+                      content: {
+                          trailingItem
+                      }
+                  )
+              }
+      }
+    }
+    ```
+    
+4. NavigationLink : 지정한 목적지로 이동할 수 있도록 만들어진 버튼
+    1. 버튼처럼 label에는 View 타입을 전달 할 수 있음.
+
+### List
+
+1. ListStyle(_:) : 다양한 속성을 통해 List의 형태를 변경 할 수 있음.
