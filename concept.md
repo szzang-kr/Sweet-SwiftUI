@@ -85,6 +85,120 @@ let bar = nested(foo)
 ```
 </br>
 
+또한 Self 타입 또는 associatedtype 타입이 선언된 프로토콜은 타입을 명시하거나 추론할 수 있어야 사용할 수 있다.
+
+그러므로 다음 코드들은 모두 에러가 발생한다.
+
+```swift
+func someFunction(_ lhs: Equatable, _ rhs: Equatable) -> Bool {} // Equatable은 Self 타입 입니다.
+
+func someFunction() -> Hashable {} // Hashable은 Equatable을 채택하고 있으므로 Self 타입 입니다.
+
+var someProperty: Collection {} // Collection은 associatedtype 타입이 선언되어 있습니다.
+```
+
+프로토콜은 유연한 타입이 장점이지만 이로 인해 불확실한 부분이 존재하며, 불투명 타입은 이를 보완하기 위한 두가지 방안을 강제한다.
+
+### 실체타입
+
+불투명 타입은 반환하는 타입은 반드시 실체 타입이여야 한다.
+
+```swift
+protocol Animal {}
+
+struct Dog: Animal {}
+struct Cat: Animal {}
+
+func returnConcreteType() -> some Animal {
+    let result: Animal = Dog()
+    return result
+}
+```
+
+위 코드는 에러를 발생시키며 실체 타입이 아닌 `Animal` 프로토콜을 반환하여 발생한다.
+
+따라서 `result`의 타입을 실체타입인 `Dog`로 변경하면 에러가 해결된다.
+
+프로토콜이 아닌 실체타입을 반환하게 하는것은 두번째 방안인 언제나 동일타입을 반환해야 하는것을 지키려는 것이기도 하다.
+
+### 동일타입
+
+반환하는 값은 달라도 반환하는 타입은 반드시 동일해야한다.
+
+Self 타입이나 associatedtype을 가진 프로토콜을 사용하려면 제네릭이 필요하다.
+
+다음코드의 함수에서 제네릭 매개변수 T는 함수를 호출하는 곳에서 타입에 대한 정보를 제공하며,
+
+lhs와 rhs라는 매개변수는 값이 다르더라도 동일한 타입을 갖는다.
+
+```swift
+func genericFunction<T: Equatable>(_ lhs: T, _ rhs: T) -> Bool {
+    lhs == rhs
+}
+
+let gf1 = genericFunction("Swift", "UI") // 호출하는 코드가 타입 정보 제공
+let gf2 = genericFunction(true, false)
+let gf3 = genericFunction("Swift", true) // 타입이 불일 치 할 경우 에러 Conflicting arguments to generic parameter 'T' ('Bool' vs. 'String')
+
+print(gf1)
+print(gf2)
+
+/*
+	false
+	false
+*/
+```
+
+앞서 불투명 타입은 제네릭을 반대로 적용한 개념이라고 언급했듯이, 동일하게 반대로 적용된다.
+
+**Self 타입이나 aasociatedtype은 함수의 반환하는 값에 대한 타입**이 되며, **값은 상황에 따라 달라지더라도 타입은 항상 동일**해야 한다.
+
+```swift
+func stringOpaqueTypeFunction() -> some Equatable {
+    .random() ? "Swift" : "UI" // 반환하는 코드가 타입 정보 제공
+}
+
+func boolOpaqueTypeFunction() -> some Equatable {
+    .random() ? true : false
+}
+
+func strangeOpaqueTypeFunction() -> some Equatable {
+    .random() ? "Swift" : true // Result values in '? :' expression have mismatching types 'String' and 'Bool'
+}
+
+let sotf1 = stringOpaqueTypeFunction()
+let sotf2 = boolOpaqueTypeFunction()
+
+print(sotf1)
+print(sotf2)
+
+/*
+    Swift
+    true
+*/
+
+```
+
+따라서 SwftUI의 body 함수에 다음과 같은 코드를 작성하게 되면 에러가 발생한다.
+
+```swift
+var body: some View {
+    .random() ? Rectangle() : Circle() // Result values in '? :' expression have mismatching types 'Rectangle' and 'Circle'
+}
+```
+
+## 정리
+
+- 불투명 타입(Opaque Type)은 자세한 타입과 구현에 대한 정보를 숨기고 특정 protocol을 따르는 API 라는 것을 명시한다.
+- prtocol 타입을 반환하면서 타입에 대한 정체성을 보장하여 API 내부에서 타입 검사 기능을 활용 할 수 있다.
+- some 키워드는 property, index, 함수의 반환 타입에만 적용 가능하며, some 키워드를 적용할 수 있는 타입은 다음과 같다.
+    - protocol
+    - class
+    - Any
+    - AnyObject
+
+---
+
 # Swift UI 컴포넌트
 
 ## Text
