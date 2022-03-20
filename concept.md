@@ -298,3 +298,170 @@ background로 추가된 top, bottom은 하위에 추가되었기 때문에 흐�
 5. 두가지 방법과 ZStack의 사용 구분
     1. .overlay/.background : 부모 뷰 외의 기존에 존재하는 다른 뷰들에게 영향을 주지 않기 때문에 레이아웃을 구성할 때 사용하기 보단 부모 뷰를 꾸밀 때 사용
     2. ZStack : 특정 변경 사항이 다른 뷰들에게 영향을 끼칠 수 있으며, 자식 뷰의 크기에 따라 ZStack의 크기가 달라질 수 있다.주로 UI를 구성할 때 사용
+
+### Color
+
+1. UIColor에서 지원하는 컬러와 SwiftUI에서 기본적으로 제공되는 컬러는 다르다.
+2. UIColor지원 컬러를 사용하고 싶을때는 `Color(UIColor.cyan)`과 같이 사용한다.
+
+### Button
+
+1. Button의 생성자는 여러가지가 있지만, 공통적으로 버튼의 외형과 이벤트가 발생 했을 때 수행할 작업을 정의한다.
+2. Button의 Generic Parameter Label은 View Protocol을 준수하는 타입은 모두 사용 가능하다.
+    
+    ```swift
+    HStack(spacing: 20) {
+      Button("Button") {
+          print("Button1")
+      }
+      Button(action: { print("Button2") }) {
+          Text("Button")
+              .padding()
+              .background(
+                  RoundedRectangle(cornerRadius: 10)
+                      .strokeBorder()
+              )
+      }
+      Button(action: { print("Button3") }) {
+          Circle()
+              .stroke(lineWidth: 2)
+              .frame(width: 80, height: 80)
+              .overlay {
+                  Text("Button")
+              }
+      }
+      .accentColor(.red) // UIButton의 tintColor
+    }
+    ```
+    
+![1](https://user-images.githubusercontent.com/39300449/159156176-2e868c40-aa2b-4f1f-b9b4-9aef64e2f16f.png)
+
+
+
+1. 버튼 이미지 사용시 이미지의 렌더링 모드에 주의하자.
+    1. renderingMode : .template / .original
+2. 버튼 이미지 사용시 버튼의 스타일에 주의하자
+    
+    ```swift
+    Button { ... }.buttonStyle(PlainButtonStyle())
+    ```
+    
+    a. PlainButtonStyle : 일반적인 상황에서 별도의 시각적 요소를 적용하지 않고 버튼을 누르거나 포커스 되어 있을 때 지정된 효과를 적용하는 스타일
+    
+3. 버튼 스타일
+    1. DefaultButtonStyle : buttonStyle 수식어 생략 시 기본적으로 적용되는 값으로서, 모든 OS에서 공통으로 사용할 수 있는 버튼 스타일. 시스템 환경에 따라서 적절한 버튼 스타일을 반영
+    2. BorderlessButtonStyle : iOS에서 대부분의 경우에 기본적으로 반용되는 스타일로 콘텐츠에 미리 지정된 시각적 효과가 적용되며 명칭 그대로 테두리를 그리지 않는다. macOS에서는 BorderedButtonStyle에 대조되는 이름의 의미로 사용. watchOS에서는 사용 불가
+    3. PlainButtonStyle : 모든 OS에서 공통으로 사용할 수 있는 버튼 스타일로서 유휴 상태에서는 버튼에 어떠한 시각적 요소도 적용하지 않습니다.
+4. onTapGesture
+    1. UIKit에서 사용하는 UITabGestureReconizer와 동일
+    2. 어느 뷰에나 추가하여 터치 이벤트를 발생 시킬 수 있음.
+    3. 그러나 버튼을 누를때의 하이라이트 애니메이션, 커스텀 스타일 등을 사용할 수 없음
+
+### Navigation View
+
+1. 네비게이션 스택을 이용해 콘텐츠 뷰들을 관리하는 컨테이너 뷰. 스타일에 따라 UINavigationController 또는 UISplitViewController의 역할 수행.
+2. NavigationViewStyle
+    1. DefaultNavigationViewStyle : 기본 스타일. 시스템 환경에 따라 자동으로 스타일 결정. watchOS에서는 사용 불가.
+    2. StackNavigationViewStyle : 네비게이션 계층 구조를 하나의 뷰로만 탐색해나가는 스타일. (UINavigationController)
+    3. DoubleColumnNavigationViewStyle : master와 detail로 구분되는 2개의 뷰를 이용해 콘텐츠를 표시하는 스타일. SplitViewController 가 사용되며, 해당 스타일을 사용할 수 없는 기기는 StackNavigationViewStyle로 대체한다.
+
+### List
+
+1. 하나의 열에 여러개의 행으로 표현되는 UI를 구성해, 다중 데이터를 쉽게 나열할 수 있는 View. UIKit의 UITableView를 대체.
+2. 콘텐츠 나열 방법
+    1. 정적 콘텐츠 : 직접 나열될 컨텐츠들을 정의하여 표현
+    2. 동적 콘텐츠 : Range, RandomAccessCollection
+    3. 정적 + 동적 콘텐츠 : ForEach
+3. Range를 사용한 동적 콘텐츠 List
+    1. Half-Open Range에 해당하는 A...<B 만 사용.
+    2. Closed Range(A...B), One-Sided Ranges(A..., ...A)는 사용 불가
+4. RandomAccessCollection 프로토콜을 채택한 동적 콘텐츠 List
+    1. RandomAccessCollection은 id를 제공해야는데, 두가지 방법이 존재
+        1. id 식별자 제공
+        2. Identifiable 채택
+    2. id 식별자 제공 방법
+        
+        Swift의 기본 타입들은 Hashable을 준수하므로 self를 명시하여 해결 가능
+        
+        ```swift
+        List(["A", "B", "C"], id: \.self) { ... }
+        List([1,2,3,4], id: \.self) { ... }
+        ```
+        
+        사용자 지정 타입의 경우 Hashable을 채택하여 동일한 방법으로 제공 가능
+        
+    3. Identifiable 채택
+        
+        ```swift
+        struct Animal: Identifiable {
+        	let id = UUID() // id는 UUID외의 Hashable을 준수하는 모든 타입 사용 가능
+        }
+        
+        List([Animal(), Animal(), Animal()] { ... } // id 생략
+        ```
+        
+        Identifiable을 채택한다면, id를 생략 가능하다.
+        
+5. ForEach를 사용한 정적 + 동적 콘텐츠 List
+    
+    ForEach는 id로 식별가능한 데이터를 받아서 뷰를 생성하는 역할.
+    
+    ```swift
+    let fruit = ["사과", "배", "포도", "바나나"]
+    let drinks = ["물", "우유", "커피"]
+    
+    var body: some View {
+      List {
+          Text("Friut").font(.largeTitle)
+          ForEach(fruit, id: \.self) {
+              Text($0)
+          }
+          
+          Text("Drink").font(.largeTitle)
+          ForEach(drinks, id: \.self) {
+              Text($0)
+          }
+      }
+    }
+    ```
+    
+6. Section을 통해 그룹화도 가능하며, Header, Footer를 선택해 적용가능하다.
+    1. Header, Footer 모두 View를 사용한다.
+
+### GeometryReader
+
+1. 자식뷰에 부모뷰와 기기에 대한 크기 및 좌표계 정보를 전달하는 기능을 수행하는 컨테이너 뷰
+2. initializer에 매개변수가 있는 content closure를 전달하며, 매개변수는 Geometry Proxy 정보를 가지고 있다.
+3. content는 ZStack과 같은 계층 구조를 가지지만 하위 뷰가 하나 존재한다면 가운데, 하위 뷰가 여러개라면 topLeading에 정렬된다.
+4. 크기를 지정하지 않는다면 주어진 공간 내에서 최대한의 크기를 가진다.
+
+### GeometryProxy
+
+1. struct이며, 두가지의 프로퍼티와 한가지 함수, 한가지의 subscript를 제공한다.
+    1. size : GeometryReader의 크기
+    2. safeAreaInsets : GeometryReader가 사용된 환경의 safeArea EdgeInsets을 반환
+    3. frame(in:) : 특정 좌표를 기준으로 프레임의 정보 반환
+    4. subsctipt(anchor:) : 자식뷰에서 anchorPreference modifier를 이용해 제공한 좌표나 프레임을 GeometryReader의 좌표계 기준으로 다시 변환하여 사용. CGRect, CGPoint를 매개변수로 전달
+
+### Frame
+
+1. UIKit에서는 frame을 변경했지만, SwiftUI에서는 콘텐츠를 담고 있는 새로운 뷰를 반환한다.
+2. SwiftUI에서의 frame은 자식뷰가 사용가능한 크기를 제한하는 역할과 뷰의 정렬 위치를 결정하는데 사용된다.
+3. 단, 제한된 크기 내에서 자식뷰는 직접 자신의 크기를 결정합니다.
+    
+    ```swift
+    Text("Frame").background(Color.yellow).frame(width: 200, height: 200)
+    Rectangle().fill(Color.yellow).frame(width: 200, height: 200)
+    ```
+    
+    ![2](https://user-images.githubusercontent.com/39300449/159156210-2f147c14-8f24-486a-9c7b-f1050979b63c.png)
+
+    
+    - 동일한 frame이지만, Text는 문자열에 의해 크기가 결정되기 때문에 영역이 작아짐.
+
+### ViewLayout
+
+1. SwiftUI에서는 View의 레이아웃을 다음과 같은 순서로 구성합니다.
+    1. 부모 뷰가 활용 가능한 크기를 자식뷰에게 전달
+    2. 자식뷰는 자신의 크기를 결정
+    3. 부모뷰는 자신의 좌표 공간에서 자식뷰를 적절하게 배치
