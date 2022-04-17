@@ -458,6 +458,30 @@ background로 추가된 top, bottom은 하위에 추가되었기 때문에 흐�
 
     
     - 동일한 frame이지만, Text는 문자열에 의해 크기가 결정되기 때문에 영역이 작아짐.
+4. 고정 크기 vs 제약조건 크기
+    1. 고정 크기 : frame의 width, height를 이용하여 고정 크기 지정
+    2. 제약조건 크기 : min, max, ideal 값을 이용하여 제약조건 크기 지정
+        1. 이때, min ≤ ideal ≤ max 오름차순으로 값을 지정해야함.
+    
+    ```swift
+    HStack {
+        // min vs max
+        Rectangle().fill(Color.red).frame(minWidth: 100)
+        Rectangle().fill(Color.orange).frame(maxWidth: 15)
+        
+        // height vs maxHeight
+        Rectangle().fill(Color.yellow).frame(height: 150)
+        Rectangle().fill(Color.green).frame(maxHeight: .infinity)
+        
+        // infinity
+        Rectangle().fill(Color.purple).frame(maxWidth: .infinity, maxHeight: .infinity)
+        Rectangle().fill(Color.blue)
+    }
+    .frame(width: 300, height: 350)
+    ```
+    
+    
+![r](https://user-images.githubusercontent.com/39300449/163700788-1b13677d-7fd7-4155-a275-6cc7aff90b90.png)
 
 ### ViewLayout
 
