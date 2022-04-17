@@ -62,3 +62,13 @@
 ### List
 
 1. ListStyle(_:) : 다양한 속성을 통해 List의 형태를 변경 할 수 있음.
+
+### Frame
+
+1. idealHeight, idealWidth: UIKit의 Intrinsic Content Size(고유 콘텐츠 크기)와 같은 개념
+    1. 부모뷰에 관계없이 자신이 가진 이상적인 크기의 값.
+    2. fixedSize를 통해 이상적인 크기에 대한 고정 가능.
+    3. fixedSize 수식어를 사용하기 전에, idealWidth 혹은 idealHeight을 지정한다면 원하는 idealSize를 설정할 수 있음.
+    4. width, height중 한가지만 fixedSize 속성을 사용한다면, ****fixedSize(horizontal:vertical:)**** 메서드 활용.
+2. ****layoutPriority(_:)**** 메서드를 사용하여 레이아웃의 우선순위를 변경할 수 있음.
+    1. UIKit에서 constraint에 priority를 주는것과 비슷한 개념
