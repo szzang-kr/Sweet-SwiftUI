@@ -5,6 +5,7 @@
 
 ## Study 📝
 * [SwiftUI 개념 정리](https://github.com/dvHuni/Sweet-SwiftUI/blob/main/concept.md)
+* [SwiftUI Component 정리](https://github.com/dvHuni/Sweet-SwiftUI/blob/main/UI_component.md)
 * [SwiftUI Modifier 정리](https://github.com/dvHuni/Sweet-SwiftUI/blob/main/modifier.md)
 
 ## Contents 📚
