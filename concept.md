@@ -1,8 +1,10 @@
 # SwiftUI 기본 개념
 
 ## Index
-* Opaque Type
-* Swift UI 컴포넌트
+* [SwiftUI의 등장](https://github.com/szzang-kr/Sweet-SwiftUI/edit/main/concept.md#swiftui의-등장)
+* [SwiftUI의 특성](https://github.com/szzang-kr/Sweet-SwiftUI/edit/main/concept.md#swiftui의-특성)
+* [Opaque Type(불투명타입)](https://github.com/szzang-kr/Sweet-SwiftUI/edit/main/concept.md#Opaque-Type(불투명타입))
+* [Omit Return(리턴 생략)](https://github.com/szzang-kr/Sweet-SwiftUI/edit/main/concept.md#omit-return리턴-생략)
 </br></br>
 
 # SwiftUI의 등장
@@ -105,6 +107,8 @@ SwiftUI에서는 데이터가 변경되는 즉시 UI도 자동으로 변경된�
 이를 위해 Source Of Truth라는 개념을 사용하게되는데 이는 데이터를 기준으로 데이터 변경에 따라 UI가 변경되는것을 의미한다.
 
 이를 통해 데이터와 UI를 동기화 하는 부분에서 항상 일관성 있는 결과를 얻을 수 있다.
+
+---
 
 # Opaque Type(불투명타입)
 
@@ -299,3 +303,66 @@ var body: some View {
     - AnyObject
 
 ---
+
+# Omit Return(리턴 생략)
+
+리턴 생략은 단일 표현식(single-expression)이 작성된 함수에 대해서는 return 키워드를 생략할 수 있다.
+
+> 표현식(expression)이란 실행시에 값을 반환하거나 side effect를 발생하거나, 둘 다 발생하게되는 코드를 말하며 Swift에서는 prefix, infix, primary, postfix 4가지의 표현식이 존재한다.
+
+상세내용은 [문서](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/expressions/) 참고
+> 
+
+```swift
+let add = { (a: Int, b: Int) in
+	a+b
+}
+
+func add(x: Int, y: Int) -> Int {
+	x+y
+}
+```
+
+중요한점은 단일 표현식과 단일 행은 다르다는 점이다.
+
+```swift
+var body: some View {
+	Text("title")
+}
+
+var body: some View {
+	Text("title")
+		.font(.title)
+}
+```
+
+아래의 body는 두개의 행으로 작성된 코드지만, 단일 표현식이므로 return 키워드를 생략할 수 있다.
+
+if-else 구문은 삼항연산자와 같은 역할이라고 생각되기 때문에 아래와 같은 코드를 작성하는 실수가 있을 수 있는데,
+
+구문과 표현식의 차이라는것을 알아두자
+
+```swift
+// 컴파일 성공
+var body: some View {
+	true ? Text("성공") : Text("실패")	
+}
+
+// 컴파일 오류
+var body: some View {
+	if true {
+		Text("성공")
+	else { 
+		Text("실패")
+	}	
+}
+
+// 컴파일 성공
+var body: some View {
+	if true {
+		return Text("성공")
+	else { 
+		return Text("실패")
+	}	
+}
+```
